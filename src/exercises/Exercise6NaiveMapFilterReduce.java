@@ -8,23 +8,23 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class NaiveMapFilterReduce {
+public class Exercise6NaiveMapFilterReduce {
     private static <T, R> List<R> map(List<T> list, Function<T, R> transform) {
-        // TODO: Implement
+        // FIXME: Implement
 
         // Returns a list with all elements of "list" after applying the function "transform" to each
         return Collections.emptyList();
     }
 
     private static <T, R> List<R> filter(List<T> list, Predicate<T> filterPredicate) {
-        // TODO: Implement
+        // FIXME: Implement
 
         // Returns a list with the elements of "list" for which "filterPredicate" returns true
         return Collections.emptyList();
     }
 
     private static <T, A> A reduce(List<T> list, BiFunction<A, T, A> accumulate, A startingElement) {
-        // TODO: Implement
+        // FIXME: Implement
 
         // Returns a single accumulator of type A. The value of the accumulator starts at "startingElement". For each
         // element of "list", we apply "accumulate" to the current accumulator and the element of the list, storing
