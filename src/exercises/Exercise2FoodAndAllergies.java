@@ -1,11 +1,15 @@
 package exercises;
 
+import exercises.model.Data;
 import exercises.model.FoodType;
 import exercises.model.Person;
+import exercises.utils.Asserts;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Exercise2FoodAndAllergies {
     // Tip: Before starting, go look up the types Person and FoodType in the exercises.model folder
@@ -81,9 +85,8 @@ public class Exercise2FoodAndAllergies {
      * @param foodType the food type to check.
      * @return the number of people having that food as their favorite.
      */
-    public static int countPeopleHavingFoodAsFavorite(List<Person> people, FoodType foodType) {
+    public static long countPeopleHavingFoodAsFavorite(List<Person> people, FoodType foodType) {
         // FIXME: implement using streams
-        // Extra: can you find two different ways to do it, both using streams?
         return 0;
     }
 
@@ -92,13 +95,50 @@ public class Exercise2FoodAndAllergies {
      * @param people the list of people.
      * @return the set of food types that at least one person is allergic to.
      */
-    public Set<FoodType> findFoodsThatTriggerAnyAllergies(List<Person> people) {
+    public static Set<FoodType> findFoodsThatTriggerAnyAllergies(List<Person> people) {
         // FIXME: implement using streams
         // Hint: check out the .flatMap() method for streams
         return Set.of();
     }
 
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
+        Asserts.assertEqual(
+                List.of("Marta", "Lucas", "Clara", "Luis", "Eustaquio", "Patricia", "Claudia", "Beatriz", "Javier", "Bonifacia"),
+                getPeopleNames(Data.PEOPLE)
+        );
+
+        Asserts.assertEqual(
+                "Marta, Lucas, Clara, Luis, Eustaquio, Patricia, Claudia, Beatriz, Javier, Bonifacia",
+                getCommaSeparatedPeopleNames(Data.PEOPLE)
+        );
+
+        Asserts.assertEqual(
+                List.of("Beatriz", "Bonifacia", "Clara", "Claudia", "Eustaquio", "Javier", "Luis", "Marta", "Patricia"),
+                getNamesOfPeopleOfAgeSortedAlphabetically(Data.PEOPLE)
+        );
+
+        Asserts.assertEqual(
+                Stream.of(2, 3, 6, 9).map(i -> Data.PEOPLE.get(i)).collect(Collectors.toList()),
+                getPeopleWithAllergies(Data.PEOPLE)
+        );
+
+        Asserts.assertEqual(Collections.emptyList(), getTopNOldestPeopleWithAllergies(Data.PEOPLE, 0));
+        Asserts.assertEqual(
+                Stream.of(9, 3).map(i -> Data.PEOPLE.get(i)).collect(Collectors.toList()),
+                getTopNOldestPeopleWithAllergies(Data.PEOPLE, 2)
+        );
+
+        Asserts.assertEqual(true, isFoodSomebodysFavorite(Data.PEOPLE, FoodType.SWEETS));
+
+        Asserts.assertEqual(3L, countPeopleHavingFoodAsFavorite(Data.PEOPLE, FoodType.SWEETS));
+        Asserts.assertEqual(1L, countPeopleHavingFoodAsFavorite(Data.PEOPLE, FoodType.MEAT));
+
+        Asserts.assertEqual(
+                Set.of(FoodType.GRAINS, FoodType.DAIRY, FoodType.SWEETS),
+                findFoodsThatTriggerAnyAllergies(Data.PEOPLE)
+        );
+
+        System.out.println("All tests succeeded");
     }
 }

@@ -1,5 +1,7 @@
 package exercises;
 
+import exercises.utils.Asserts;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -49,8 +51,20 @@ public class Exercise1WarmUp {
     }
 
     public static void main(String[] args) {
-        List<Integer> numbers = List.of(1, 4, 8, 0, 6, 8, 3, 7, 1, 9, 3, 3, 4);
+        List<Integer> numbers = List.of(1, 4, 8, 6, 8, 3, 7, 1, 9, 3, 3, 4);
 
+        Asserts.assertEqual(List.of(8, 6, 8, 7, 9), numbersGreaterThan(numbers, 5));
+        Asserts.assertEqual(numbers, numbersGreaterThan(numbers, 0));
 
+        Asserts.assertEqual(List.of("1", "4", "8", "6", "8", "3", "7", "1", "9", "3", "3", "4"),
+                numbersAsString(numbers));
+
+        Asserts.assertEqual(List.of(List.of(2, 2), List.of(), List.of(3, 3, 3), List.of(1)),
+                numbersRepeated(List.of(2, 0, 3, 1)));
+
+        Asserts.assertEqual(10450944, product(numbers));
+        Asserts.assertEqual(1, product(Collections.emptyList()));
+
+        System.out.println("All tests succeeded");
     }
 }

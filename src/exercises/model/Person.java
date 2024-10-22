@@ -36,4 +36,9 @@ public class Person {
     public Diet getDiet() {
         return diet;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Person(%s)", this.getName());
+    }
 }
