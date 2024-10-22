@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 public class Exercise5TrickierQuestions {
+    /**
+     * The questions in this section are significantly more complicated. There is no guarantee there will be an
+     * "easy" solution. Attempt at your own risk!
+     */
 
     private static class Bin {
         private final int start; // Inclusive
