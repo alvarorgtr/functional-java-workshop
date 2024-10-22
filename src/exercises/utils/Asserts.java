@@ -8,4 +8,10 @@ public class Asserts {
             throw new AssertException("Elements not equal", expected, actual);
         }
     }
+
+    public static void assertApproxEqual(double expected, double actual) {
+        if (Math.abs(actual - expected) > 0.0001d) {
+            throw new AssertException("Elements not equal", expected, actual);
+        }
+    }
 }

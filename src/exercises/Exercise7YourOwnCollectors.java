@@ -1,7 +1,12 @@
 package exercises;
 
+import exercises.utils.Asserts;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collector;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class Exercise7YourOwnCollectors {
     /**
@@ -30,14 +35,18 @@ public class Exercise7YourOwnCollectors {
     }
 
     private static class Podium<T extends Comparable<T>> {
-        private final T first;
-        private final T second;
-        private final T third;
+        private T first;
+        private T second;
+        private T third;
+
+        public Podium(T first, T second, T third) {
+            this.first = first;
+            this.second = second;
+            this.third = third;
+        }
 
         public Podium() {
-            this.first = null;
-            this.second = null;
-            this.third = null;
+            this(null, null, null);
         }
 
         public T getFirst() {
@@ -65,6 +74,50 @@ public class Exercise7YourOwnCollectors {
     }
 
     public static void main(String[] args) {
+        List<Integer> numbers = List.of(1, 6, 1, 9, 2, 3, 7);
 
+        // Test custom list collector
+        Asserts.assertEqual(
+                numbers,
+                numbers.stream().collect(customToListCollector())
+        );
+
+        // Test geometric mean collector
+        Asserts.assertApproxEqual(
+                1d,
+                Collections.nCopies(50, 1).stream().collect(geometricMeanCollector())
+        );
+        Asserts.assertApproxEqual(
+                5d,
+                Collections.nCopies(50, 5).stream().collect(geometricMeanCollector())
+        );
+        Asserts.assertApproxEqual(
+                5d,
+                Collections.nCopies(50, 5).parallelStream().collect(geometricMeanCollector())
+        );
+        Asserts.assertApproxEqual(
+                0.5d,
+                Stream.of(4d, 1d, 1d / 32).collect(geometricMeanCollector())
+        );
+        Asserts.assertApproxEqual(
+                0.5d,
+                List.of(4d, 1d, 1d / 32).parallelStream().collect(geometricMeanCollector())
+        );
+
+        // Test podium collector
+        Asserts.assertEqual(
+                new Podium<>(99, 98, 97),
+                IntStream.range(1, 100).boxed().collect(podiumCollector())
+        );
+        Asserts.assertEqual(
+                new Podium<>(9, 8, 7),
+                Stream.of(1, 3, 5, 6, 1, 2, 3, 5, 8, 6, 0, 9, 7, 2).collect(podiumCollector())
+        );
+        Asserts.assertEqual(
+                new Podium<>(9, 8, 7),
+                List.of(1, 3, 5, 6, 1, 2, 3, 5, 8, 6, 0, 9, 7, 2).parallelStream().collect(podiumCollector())
+        );
+
+        System.out.println("All tests passed");
     }
 }
