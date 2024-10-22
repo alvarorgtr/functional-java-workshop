@@ -2,8 +2,15 @@ package exercises;
 
 import exercises.utils.Asserts;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -15,9 +22,47 @@ public class Exercise7YourOwnCollectors {
      * @param <T> the contents of the stream.
      */
     private static <T> Collector<T, ?, List<T>> customToListCollector() {
-        // FIXME: should return a custom collector class that acts the same as Collectors.toList()
-        // Tip: you can choose to use Collectors.of() instead of building a class, depending on your preference
-        return null;
+        return new Collector<T, List<T>, List<T>>() {
+            @Override
+            public Supplier<List<T>> supplier() {
+                return ArrayList::new;
+            }
+
+            @Override
+            public BiConsumer<List<T>, T> accumulator() {
+                return List::add;
+            }
+
+            @Override
+            public BinaryOperator<List<T>> combiner() {
+                return (l1, l2) -> {
+                    List<T> result = new ArrayList<>();
+                    result.addAll(l1);
+                    result.addAll(l2);
+                    return result;
+                };
+            }
+
+            @Override
+            public Function<List<T>, List<T>> finisher() {
+                return Function.identity();
+            }
+
+            @Override
+            public Set<Characteristics> characteristics() {
+                return Set.of(Characteristics.IDENTITY_FINISH);
+            }
+        };
+    }
+
+    private static class MeanAccumulator {
+        double current;
+        int size;
+
+        public MeanAccumulator(double current, int size) {
+            this.current = current;
+            this.size = size;
+        }
     }
 
     /**
@@ -27,11 +72,36 @@ public class Exercise7YourOwnCollectors {
      * @param <N> the contents of the stream, which must be numbers.
      */
     private static <N extends Number> Collector<N, ?, Double> geometricMeanCollector() {
-        // FIXME: should return a custom collector class that calculates the geometric mean
-        // Wikipedia: https://en.wikipedia.org/wiki/Geometric_mean
-        // Tip: you can choose to use Collectors.of() instead of building a class, depending on your preference
-        // Extra: can you build another collector using the second formula in the wikipedia article?
-        return null;
+        return new Collector<N, MeanAccumulator, Double>() {
+            @Override
+            public Supplier<MeanAccumulator> supplier() {
+                return () -> new MeanAccumulator(1d, 0);
+            }
+
+            @Override
+            public BiConsumer<MeanAccumulator, N> accumulator() {
+                return (a, n) -> {
+                    a.size += 1;
+                    a.current *= n.doubleValue();
+                };
+            }
+
+            @Override
+            public BinaryOperator<MeanAccumulator> combiner() {
+                return (a1, a2) -> new MeanAccumulator(a1.current * a2.current, a1.size + a2.size);
+            }
+
+            @Override
+            public Function<MeanAccumulator, Double> finisher() {
+                // Take the size-th root
+                return a -> Math.pow(a.current, 1d / a.size);
+            }
+
+            @Override
+            public Set<Characteristics> characteristics() {
+                return Set.of(Characteristics.UNORDERED);
+            }
+        };
     }
 
     private static class Podium<T extends Comparable<T>> {
@@ -60,6 +130,20 @@ public class Exercise7YourOwnCollectors {
         public T getThird() {
             return third;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == this) {
+                return true;
+            }
+            if (!(o instanceof Podium<?>)) {
+                return false;
+            }
+            Podium<?> other = (Podium<?>) o;
+            return Objects.equals(first, other.first)
+                    && Objects.equals(second, other.second)
+                    && Objects.equals(third, other.third);
+        }
     }
 
     /**
@@ -68,9 +152,55 @@ public class Exercise7YourOwnCollectors {
      * @param <T> the contents of the stream.
      */
     private static <T extends Comparable<T>> Collector<T, ?, Podium<T>> podiumCollector() {
-        // FIXME: should return a custom collector class that builds a podium
-        // Tip: you can choose to use Collectors.of() instead of building a class, depending on your preference
-        return null;
+        return new Collector<T, Podium<T>, Podium<T>>() {
+            @Override
+            public Supplier<Podium<T>> supplier() {
+                return Podium::new;
+            }
+
+            private void addToPodium(Podium<T> p, T e) {
+                if (e != null) {
+                    if (p.first == null || e.compareTo(p.first) > 0) {
+                        p.third = p.second;
+                        p.second = p.first;
+                        p.first = e;
+                    } else if (p.second == null || e.compareTo(p.second) > 0) {
+                        p.third = p.second;
+                        p.second = e;
+                    } else if (p.third == null || e.compareTo(p.third) > 0) {
+                        p.third = e;
+                    }
+                }
+            }
+
+            @Override
+            public BiConsumer<Podium<T>, T> accumulator() {
+                return this::addToPodium;
+            }
+
+            @Override
+            public BinaryOperator<Podium<T>> combiner() {
+                return (p1, p2) -> {
+                    Podium<T> p = new Podium<>();
+                    for (Podium<T> otherPodium: List.of(p1, p2)) {
+                        addToPodium(p, otherPodium.first);
+                        addToPodium(p, otherPodium.second);
+                        addToPodium(p, otherPodium.third);
+                    }
+                    return p;
+                };
+            }
+
+            @Override
+            public Function<Podium<T>, Podium<T>> finisher() {
+                return Function.identity();
+            }
+
+            @Override
+            public Set<Characteristics> characteristics() {
+                return Set.of(Characteristics.IDENTITY_FINISH, Characteristics.UNORDERED);
+            }
+        };
     }
 
     public static void main(String[] args) {
