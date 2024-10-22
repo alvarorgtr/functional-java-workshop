@@ -5,9 +5,9 @@ import exercises.model.FoodType;
 import exercises.model.Person;
 import exercises.utils.Asserts;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Exercise3GroupingPeople {
     // Tip: Before starting, go look up the types Person and FoodType in the exercises.model folder
@@ -18,8 +18,8 @@ public class Exercise3GroupingPeople {
      * @return the map.
      */
     public static Map<FoodType, List<Person>> groupPeopleByFavoriteFood(List<Person> people) {
-        // FIXME: implement using streams
-        return Collections.emptyMap();
+        return people.stream()
+                .collect(Collectors.groupingBy(Person::getFavouriteFood));
     }
 
     /**
@@ -28,8 +28,9 @@ public class Exercise3GroupingPeople {
      * @return the map.
      */
     public static Map<FoodType, Person> findOldestPersonWithEachFoodAsFavorite(List<Person> people) {
-        // FIXME: implement using streams
-        return Collections.emptyMap();
+        return people.stream()
+                .collect(Collectors.groupingBy(Person::getFavouriteFood,
+                        Collectors.reducing(null, (p1, p2) -> (p1 != null && p1.getAge() > p2.getAge()) ? p1 : p2)));
     }
 
     /**
@@ -39,8 +40,10 @@ public class Exercise3GroupingPeople {
      * @return the map.
      */
     public static Map<FoodType, List<String>> groupPeopleWithoutAllergiesByFavoriteFood(List<Person> people) {
-        // FIXME: implement using streams
-        return Collections.emptyMap();
+        return people.stream()
+                .filter(p -> !p.getAllergies().isEmpty())
+                .collect(Collectors.groupingBy(Person::getFavouriteFood,
+                        Collectors.mapping(Person::getName, Collectors.toList())));
     }
 
     /**
@@ -49,8 +52,9 @@ public class Exercise3GroupingPeople {
      * @return the map.
      */
     public static Map<FoodType, Integer> findAgeOfOldestPersonWithEachFoodAsFavorite(List<Person> people) {
-        // FIXME: implement using streams
-        return Collections.emptyMap();
+        return people.stream()
+                .collect(Collectors.groupingBy(Person::getFavouriteFood,
+                        Collectors.mapping(Person::getAge, Collectors.reducing(0, Math::max))));
     }
 
     /**
@@ -59,9 +63,9 @@ public class Exercise3GroupingPeople {
      * @param people the list of people.
      * @return the map.
      */
-    public static Map<FoodType, Integer> groupPeopleByAgeGroups(List<Person> people, int sizeOfGroup) {
-        // FIXME: implement using streams
-        return Collections.emptyMap();
+    public static Map<Integer, List<Person>> groupPeopleByAgeGroups(List<Person> people, int sizeOfGroup) {
+        return people.stream()
+                .collect(Collectors.groupingBy(p -> sizeOfGroup * (p.getAge() / sizeOfGroup)));
     }
 
     public static void main(String[] args) {
