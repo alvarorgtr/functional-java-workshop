@@ -1,7 +1,9 @@
 package exercises;
 
+import exercises.model.Data;
 import exercises.model.FoodType;
 import exercises.model.Person;
+import exercises.utils.Asserts;
 
 import java.util.Collections;
 import java.util.List;
@@ -63,6 +65,62 @@ public class Exercise3GroupingPeople {
     }
 
     public static void main(String[] args) {
+        Asserts.assertEqual(
+                Map.of(
+                        FoodType.MEAT, List.of(Data.CLAUDIA),
+                        FoodType.GRAINS, List.of(Data.LUIS, Data.PATRICIA),
+                        FoodType.FISH, List.of(Data.MARTA, Data.CLARA, Data.BEATRIZ),
+                        FoodType.SWEETS, List.of(Data.LUCAS, Data.JAVIER, Data.BONIFACIA),
+                        FoodType.VEGETABLES, List.of(Data.EUSTAQUIO)
+                ),
+                groupPeopleByFavoriteFood(Data.PEOPLE)
+        );
 
+        Asserts.assertEqual(
+                Map.of(
+                        FoodType.MEAT, Data.CLAUDIA,
+                        FoodType.GRAINS, Data.LUIS,
+                        FoodType.FISH, Data.BEATRIZ,
+                        FoodType.SWEETS, Data.BONIFACIA,
+                        FoodType.VEGETABLES, Data.EUSTAQUIO
+                ),
+                findOldestPersonWithEachFoodAsFavorite(Data.PEOPLE)
+        );
+
+        Asserts.assertEqual(
+                Map.of(
+                        FoodType.VEGETABLES, List.of("Eustaquio"),
+                        FoodType.GRAINS, List.of("Patricia"),
+                        FoodType.FISH, List.of("Marta", "Beatriz"),
+                        FoodType.SWEETS, List.of("Lucas", "Javier")
+                ),
+                groupPeopleWithoutAllergiesByFavoriteFood(Data.PEOPLE)
+        );
+
+        Asserts.assertEqual(
+                Map.of(
+                        FoodType.MEAT, 30,
+                        FoodType.GRAINS, 44,
+                        FoodType.FISH, 58,
+                        FoodType.SWEETS, 88,
+                        FoodType.VEGETABLES, 90
+                ),
+                findAgeOfOldestPersonWithEachFoodAsFavorite(Data.PEOPLE)
+        );
+
+        Asserts.assertEqual(
+                Map.of(
+                        10, List.of(Data.LUCAS),
+                        20, List.of(Data.CLARA, Data.PATRICIA),
+                        30, List.of(Data.MARTA, Data.CLAUDIA, Data.JAVIER),
+                        40, List.of(Data.LUIS),
+                        50, List.of(Data.BEATRIZ),
+                        80, List.of(Data.BONIFACIA),
+                        90, List.of(Data.EUSTAQUIO)
+                ),
+                groupPeopleByAgeGroups(Data.PEOPLE, 10)
+        );
+
+        System.out.println("All tests succeeded");
     }
 }

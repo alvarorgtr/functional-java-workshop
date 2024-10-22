@@ -130,6 +130,7 @@ public class Exercise2FoodAndAllergies {
         );
 
         Asserts.assertEqual(true, isFoodSomebodysFavorite(Data.PEOPLE, FoodType.SWEETS));
+        Asserts.assertEqual(false, isFoodSomebodysFavorite(Data.PEOPLE, FoodType.DAIRY));
 
         Asserts.assertEqual(3L, countPeopleHavingFoodAsFavorite(Data.PEOPLE, FoodType.SWEETS));
         Asserts.assertEqual(1L, countPeopleHavingFoodAsFavorite(Data.PEOPLE, FoodType.MEAT));
