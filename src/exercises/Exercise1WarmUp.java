@@ -4,6 +4,7 @@ import exercises.utils.Asserts;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Exercise1WarmUp {
     /**
@@ -13,8 +14,9 @@ public class Exercise1WarmUp {
      * @return the list of numbers meeting the condition.
      */
     private static List<Integer> numbersGreaterThan(List<Integer> numbers, int value) {
-        // FIXME: implement using streams
-        return Collections.emptyList();
+        return numbers.stream()
+                .filter(n -> n > value)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -23,8 +25,9 @@ public class Exercise1WarmUp {
      * @return the list of numbers as strings.
      */
     private static List<String> numbersAsString(List<Integer> numbers) {
-        // FIXME: implement using streams
-        return Collections.emptyList();
+        return numbers.stream()
+                .map(Object::toString)  // You could also use i -> i.toString()
+                .collect(Collectors.toList());
     }
 
     /**
@@ -34,9 +37,9 @@ public class Exercise1WarmUp {
      * @return the list of numbers as strings.
      */
     private static List<List<Integer>> numbersRepeated(List<Integer> numbers) {
-        // FIXME: implement using streams
-        // Hint: check out the Collections.nCopies() method
-        return Collections.emptyList();
+        return numbers.stream()
+                .map(i -> Collections.nCopies(i, i))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -45,9 +48,8 @@ public class Exercise1WarmUp {
      * @return the product of all numbers in the array.
      */
     private static Integer product(List<Integer> numbers) {
-        // FIXME: implement using streams
-        // Extra: you should do it without writing any "ifs"!
-        return 0;
+        return numbers.stream()
+                .reduce(1, (a, i) -> a * i);
     }
 
     public static void main(String[] args) {

@@ -6,6 +6,7 @@ import exercises.model.Person;
 import exercises.utils.Asserts;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,9 +21,9 @@ public class Exercise2FoodAndAllergies {
      * @return the list of people names.
      */
     public static List<String> getPeopleNames(List<Person> people) {
-        // FIXME: implement using streams
-        // Extra: can you do it with method references instead of lambdas?
-        return Collections.emptyList();
+        return people.stream()
+                .map(Person::getName)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -32,8 +33,9 @@ public class Exercise2FoodAndAllergies {
      * @return the string containing people names.
      */
     public static String getCommaSeparatedPeopleNames(List<Person> people) {
-        // FIXME: implement using streams
-        return "";
+        return people.stream()
+                .map(Person::getName)
+                .collect(Collectors.joining(", "));
     }
 
     /**
@@ -42,8 +44,11 @@ public class Exercise2FoodAndAllergies {
      * @return the list of names of people with allergies.
      */
     public static List<String> getNamesOfPeopleOfAgeSortedAlphabetically(List<Person> people) {
-        // FIXME: implement using streams
-        return Collections.emptyList();
+        return people.stream()
+                .filter(p -> p.getAge() >= 18)
+                .map(Person::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     /**
@@ -52,8 +57,9 @@ public class Exercise2FoodAndAllergies {
      * @return the list of people with allergies.
      */
     public static List<Person> getPeopleWithAllergies(List<Person> people) {
-        // FIXME: implement using streams
-        return Collections.emptyList();
+        return people.stream()
+                .filter(p -> !p.getAllergies().isEmpty())
+                .collect(Collectors.toList());
     }
 
     /**
@@ -63,8 +69,11 @@ public class Exercise2FoodAndAllergies {
      * @return the list of people without allergies.
      */
     public static List<Person> getTopNOldestPeopleWithAllergies(List<Person> people, int n) {
-        // FIXME: implement using streams
-        return Collections.emptyList();
+        return people.stream()
+                .filter(p -> !p.getAllergies().isEmpty())
+                .sorted(Comparator.comparingInt(Person::getAge).reversed())
+                .limit(n)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -74,9 +83,15 @@ public class Exercise2FoodAndAllergies {
      * @return true if the food type is somebody's favorite
      */
     public static boolean isFoodSomebodysFavorite(List<Person> people, FoodType foodType) {
-        // FIXME: implement using streams
-        // Hint: check out the anyMatch() method for streams
-        return false;
+        return people.stream()
+                .map(Person::getFavouriteFood)
+                .anyMatch(foodType::equals);
+
+
+        /* Also valid (shorter but a bit more difficult to read!)
+        return people.stream()
+                .anyMatch(p -> foodType.equals(p.getFavouriteFood()));
+         */
     }
 
     /**
@@ -86,8 +101,10 @@ public class Exercise2FoodAndAllergies {
      * @return the number of people having that food as their favorite.
      */
     public static long countPeopleHavingFoodAsFavorite(List<Person> people, FoodType foodType) {
-        // FIXME: implement using streams
-        return 0;
+        return people.stream()
+                .map(Person::getFavouriteFood)
+                .filter(foodType::equals)
+                .count();
     }
 
     /**
@@ -96,9 +113,9 @@ public class Exercise2FoodAndAllergies {
      * @return the set of food types that at least one person is allergic to.
      */
     public static Set<FoodType> findFoodsThatTriggerAnyAllergies(List<Person> people) {
-        // FIXME: implement using streams
-        // Hint: check out the .flatMap() method for streams
-        return Set.of();
+        return people.stream()
+                .flatMap(p -> p.getAllergies().stream())
+                .collect(Collectors.toSet());
     }
 
 
