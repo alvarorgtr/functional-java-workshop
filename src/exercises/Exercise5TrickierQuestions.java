@@ -86,6 +86,17 @@ public class Exercise5TrickierQuestions {
         return Collections.emptyList();
     }
 
+    /**
+     * Returns a list of size amount with the numbers n^0 - 1, n^1 - 1, n^2 - 1 etc.
+     * @param n the base.
+     * @param amount the number of items in the list.
+     * @return the list.
+     */
+    private List<Integer> powersOfNMinus1(int n, int amount) {
+        // FIXME: implement using streams and without using exponents
+        return Collections.emptyList();
+    }
+
     public static void main(String[] args) {
 
     }

@@ -53,6 +53,17 @@ public class Exercise2FoodAndAllergies {
     }
 
     /**
+     * Returns the top n oldest people that have no allergies, sorted from the oldest.
+     * @param people the list of people.
+     * @param n how many people to return.
+     * @return the list of people without allergies.
+     */
+    public static List<Person> getTopNOldestPeopleWithAllergies(List<Person> people, int n) {
+        // FIXME: implement using streams
+        return Collections.emptyList();
+    }
+
+    /**
      * Finds out if the given food type is the favorite of somebody in the list.
      * @param people the list of people.
      * @param foodType the food type to check.

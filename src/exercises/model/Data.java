@@ -26,7 +26,8 @@ public class Data {
             new Person("Patricia", 22, FoodType.GRAINS, Collections.emptySet(), generateDiet(2, 7, 0, 0, 3, 2)),
             new Person("Claudia", 30, FoodType.MEAT, Set.of(FoodType.SWEETS, FoodType.DAIRY), generateDiet(0, 4, 2, 3, 3, 0)),
             new Person("Beatriz", 58, FoodType.FISH, Collections.emptySet(), generateDiet(1, 0, 1, 4, 3, 3)),
-            new Person("Javier", 33, FoodType.SWEETS, Collections.emptySet(), generateDiet(3, 4, 0, 0, 6, 1))
+            new Person("Javier", 33, FoodType.SWEETS, Collections.emptySet(), generateDiet(3, 4, 0, 0, 6, 1)),
+            new Person("Bonifacia", 33, FoodType.SWEETS, Set.of(FoodType.SWEETS), generateDiet(1, 4, 0, 2, 1, 1))
     );
 
     public static Map<FoodType, Integer> PRICES = Map.of(

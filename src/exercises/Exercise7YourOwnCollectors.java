@@ -11,6 +11,21 @@ public class Exercise7YourOwnCollectors {
      */
     private static <T> Collector<T, ?, List<T>> customToListCollector() {
         // FIXME: should return a custom collector class that acts the same as Collectors.toList()
+        // Tip: you can choose to use Collectors.of() instead of building a class, depending on your preference
+        return null;
+    }
+
+    /**
+     * Build a collector that computes the <a href="https://en.wikipedia.org/wiki/Geometric_mean">geometric mean</a>.
+     *
+     * @return an instance of the collector.
+     * @param <N> the contents of the stream, which must be numbers.
+     */
+    private static <N extends Number> Collector<N, ?, Double> geometricMeanCollector() {
+        // FIXME: should return a custom collector class that calculates the geometric mean
+        // Wikipedia: https://en.wikipedia.org/wiki/Geometric_mean
+        // Tip: you can choose to use Collectors.of() instead of building a class, depending on your preference
+        // Extra: can you build another collector using the second formula in the wikipedia article?
         return null;
     }
 
@@ -45,6 +60,7 @@ public class Exercise7YourOwnCollectors {
      */
     private static <T extends Comparable<T>> Collector<T, ?, Podium<T>> podiumCollector() {
         // FIXME: should return a custom collector class that builds a podium
+        // Tip: you can choose to use Collectors.of() instead of building a class, depending on your preference
         return null;
     }
 
