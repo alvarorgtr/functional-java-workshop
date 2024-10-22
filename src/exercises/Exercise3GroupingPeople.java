@@ -41,7 +41,7 @@ public class Exercise3GroupingPeople {
      */
     public static Map<FoodType, List<String>> groupPeopleWithoutAllergiesByFavoriteFood(List<Person> people) {
         return people.stream()
-                .filter(p -> !p.getAllergies().isEmpty())
+                .filter(p -> p.getAllergies().isEmpty())
                 .collect(Collectors.groupingBy(Person::getFavouriteFood,
                         Collectors.mapping(Person::getName, Collectors.toList())));
     }
